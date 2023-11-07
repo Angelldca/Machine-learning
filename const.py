@@ -1,4 +1,7 @@
 import joblib
+from sklearn.preprocessing import LabelEncoder
+
+
 
 
 dir = 'C:/Angel/Programacion/project_Python/AA_Python/diabetes+130-us+hospitals+for+years+1999-2008/'
@@ -21,3 +24,9 @@ def loadTrain(knn,perceptron,decisionTree):
     perceptron = joblib.load('Perceptron_classifier_model.pkl')
     decisionTree = joblib.load('DecisionTree_classifier_model.pkl')
     print("Entrenamiento cargado")
+
+def ppDecicionTree(df,columnas):
+    encoder = LabelEncoder()
+    for element in columnas:
+        df[element] = encoder.fit_transform(df[element])
+

@@ -59,17 +59,7 @@ def ppA1Cresult(element):
         return 3
     else: return 1
 
-# Aplicar la función a la columna 'gender'
-df['gender'] = df['gender'].apply(preprocesarGender)
 
-# Aplicar la función a la columna 'age'
-df['age'] = df['age'].apply(preprocesarAge)
-
-
-# Aplicar la función a la columna 'max_glu_serum'
-df['max_glu_serum'] = df['max_glu_serum'].apply(ppMax_glu_serum)
-# Aplicar la función a la columna 'max_glu_serum'
-df['A1Cresult'] = df['A1Cresult'].apply(ppA1Cresult)
 
 
 # Definir un mapeo personalizado entre categorías de los medicamentos y números
@@ -106,6 +96,12 @@ encoder = LabelEncoder()
 df['race'] = encoder.fit_transform(df['race'])
 df['change'] = encoder.fit_transform(df['change'])
 df['diabetesMed'] = encoder.fit_transform(df['diabetesMed'])
+
+df['gender'] = encoder.fit_transform(df['gender'])
+df['age'] = encoder.fit_transform(df['age'])
+df['max_glu_serum'] = encoder.fit_transform(df['max_glu_serum'])
+df['A1Cresult'] = encoder.fit_transform(df['A1Cresult'])
+
 
 # Aplicar la transformación a la columnas 'diag'
 df['diag_1'] = encoder.fit_transform(df['diag_1'])

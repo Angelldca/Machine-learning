@@ -20,8 +20,9 @@ scaler = MinMaxScaler()
 # Aplicar la transformación de normalización a los datos
 X_normalized = scaler.fit_transform(X)
 
+def ppKnnResult(df):
+    df = pd.DataFrame(X_normalized, columns=df.columns)
 
-df = pd.DataFrame(X_normalized, columns=df.columns)
-
+ppKnnResult(df)
 
 df.to_csv(dir + 'diabetic_dataPP_Knn.csv',index=False)

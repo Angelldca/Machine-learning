@@ -73,9 +73,13 @@ def ppReadmitted(element):
         return -1
 # Aplicar la función a la columna 'readmitted'
 df['readmitted'] = df['readmitted'].apply(ppReadmitted)
-
+# Cuenta cuántas veces aparece el valor en la columna
+conteo_valor = df['readmitted'].value_counts().get(-1, 0)
 
 filas = df.shape[0]
-print(filas)  #69,984
-#df[~df['readmitted']== ">30"]
+# Calcula el porcentaje
+total_filas = len(df)
+porcentaje = (conteo_valor / total_filas) * 100
+print(porcentaje)  #69,984
+
 df.to_csv(dir + 'diabetic_dataPP.csv',index=False)

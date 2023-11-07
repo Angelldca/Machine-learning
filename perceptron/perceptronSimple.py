@@ -18,10 +18,10 @@ X = df[colMin]
 y = df['readmitted']
 
 # Dividir los datos en conjuntos de entrenamiento y prueba
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 #Crear un clasificador de perceptrón
-perceptron = Perceptron(alpha=0.0001,max_iter=1000)
+perceptron = Perceptron(alpha=0.1,max_iter=1000)
 
 #Entrenar el perceptrón
 perceptron.fit(X_train, y_train)
