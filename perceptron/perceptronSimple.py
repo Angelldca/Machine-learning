@@ -4,7 +4,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
 import pandas as pd
-import pickle
 import joblib 
 import os
 import sys

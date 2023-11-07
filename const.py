@@ -1,4 +1,4 @@
-
+import joblib
 
 
 dir = 'C:/Angel/Programacion/project_Python/AA_Python/diabetes+130-us+hospitals+for+years+1999-2008/'
@@ -13,3 +13,11 @@ colMax = ['race','gender','age','admission_type_id','discharge_disposition_id','
 'glipizide','glyburide','tolbutamide','pioglitazone','rosiglitazone','acarbose','miglitol','troglitazone',
 'tolazamide','examide','citoglipton','insulin','glyburide-metformin','glipizide-metformin',
 'glimepiride-pioglitazone','metformin-rosiglitazone','metformin-pioglitazone','change', 'diabetesMed']
+
+
+
+def loadTrain(knn,perceptron,decisionTree):
+    knn = joblib.load('Knn_classifier_model.pkl')
+    perceptron = joblib.load('Perceptron_classifier_model.pkl')
+    decisionTree = joblib.load('DecisionTree_classifier_model.pkl')
+    print("Entrenamiento cargado")

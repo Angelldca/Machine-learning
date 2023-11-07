@@ -131,6 +131,7 @@ columnas  = ['race','gender','age','admission_type_id','discharge_disposition_id
 
 encoder = LabelEncoder()
 
+df.to_csv(dir + 'diabetic_dataPP_Categorias.csv',index=False)
 # Aplicar la transformación a la columna correspondoente de categoria a numero
 df['readmitted'] = encoder.fit_transform(df['readmitted'])
 
