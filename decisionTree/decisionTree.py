@@ -2,6 +2,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import accuracy_score
+from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
 from sklearn import tree
 import pandas as pd
@@ -18,18 +19,20 @@ from const import dir,colMin
 
 # conjunto de datos 
 
-df = pd.read_csv(dir + 'diabetic_dataPP_DecisionTree.csv')
+df = pd.read_csv(dir + 'diabetic_dataPP.csv')
 
 columnas  = colMin
 
 X = df[columnas]
 y = df['readmitted']
-
+#Equilibrar datos SMOTE
+smote = SMOTE(random_state=42)
+X_resampled, y_resampled = smote.fit_resample(X, y)
 
 clf = DecisionTreeClassifier()
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.4, random_state=16)
 
 
 

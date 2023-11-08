@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import KBinsDiscretizer
 import os
 import sys
 
@@ -62,51 +63,37 @@ def ppA1Cresult(element):
 
 
 
-# Definir un mapeo personalizado entre categorías de los medicamentos y números
-mapeo_personalizado = {'No': 0, 'Steady': 1,'Down':2, 'Up': 3}
-
-# Aplicar el mapeo personalizado a las columnas de los medicamentos
-df['metformin'] = df['metformin'].map(mapeo_personalizado)
-df['repaglinide'] = df['repaglinide'].map(mapeo_personalizado)
-df['nateglinide'] = df['nateglinide'].map(mapeo_personalizado)
-df['chlorpropamide'] = df['chlorpropamide'].map(mapeo_personalizado)
-df['glimepiride'] = df['glimepiride'].map(mapeo_personalizado)
-df['acetohexamide'] = df['acetohexamide'].map(mapeo_personalizado)
-df['glipizide'] = df['glipizide'].map(mapeo_personalizado)
-df['glyburide'] = df['glyburide'].map(mapeo_personalizado)
-df['tolbutamide'] = df['tolbutamide'].map(mapeo_personalizado)
-df['pioglitazone'] = df['pioglitazone'].map(mapeo_personalizado)
-df['rosiglitazone'] = df['rosiglitazone'].map(mapeo_personalizado)
-df['acarbose'] = df['acarbose'].map(mapeo_personalizado)
-df['miglitol'] = df['miglitol'].map(mapeo_personalizado)
-df['troglitazone'] = df['troglitazone'].map(mapeo_personalizado)
-df['tolazamide'] = df['tolazamide'].map(mapeo_personalizado)
-df['examide'] = df['examide'].map(mapeo_personalizado)
-df['citoglipton'] = df['citoglipton'].map(mapeo_personalizado)
-df['insulin'] = df['insulin'].map(mapeo_personalizado)
-df['glyburide-metformin'] = df['glyburide-metformin'].map(mapeo_personalizado)
-df['glipizide-metformin'] = df['glipizide-metformin'].map(mapeo_personalizado)
-df['glimepiride-pioglitazone'] = df['glimepiride-pioglitazone'].map(mapeo_personalizado)
-df['metformin-rosiglitazone'] = df['metformin-rosiglitazone'].map(mapeo_personalizado)
-df['metformin-pioglitazone'] = df['metformin-pioglitazone'].map(mapeo_personalizado)
 
 encoder = LabelEncoder()
 
 # Aplicar la transformación a la columna correspondoente de categoria a numero
 df['race'] = encoder.fit_transform(df['race'])
-df['change'] = encoder.fit_transform(df['change'])
-df['diabetesMed'] = encoder.fit_transform(df['diabetesMed'])
+mapeo_personalizado={'No': 0, 'Yes': 1,'Ch':1}
+df['change'] = df['change'].map(mapeo_personalizado)
+df['diabetesMed'] = df['diabetesMed'].map(mapeo_personalizado)
 
 df['gender'] = encoder.fit_transform(df['gender'])
-df['age'] = encoder.fit_transform(df['age'])
-df['max_glu_serum'] = encoder.fit_transform(df['max_glu_serum'])
-df['A1Cresult'] = encoder.fit_transform(df['A1Cresult'])
+mapeo_personalizado={'younger': 1, 'middle': 1.5,'older':2}
+df['age'] = df['age'].map(mapeo_personalizado)
+
+mapeo_personalizado={'none': 0, 'Norm': 1,'>200':2, '>300':3}
+df['max_glu_serum'] = df['max_glu_serum'].map(mapeo_personalizado)
+mapeo_personalizado={'none': 0, 'Norm': 1,'>7':2, '>8':3}
+df['A1Cresult'] = df['A1Cresult'].map(mapeo_personalizado)
 
 
 # Aplicar la transformación a la columnas 'diag'
 df['diag_1'] = encoder.fit_transform(df['diag_1'])
 df['diag_2'] = encoder.fit_transform(df['diag_2'])
 df['diag_3'] = encoder.fit_transform(df['diag_3'])
+
+discretizer = KBinsDiscretizer(n_bins=3, encode='ordinal', strategy='uniform',subsample=None)
+df['diag_1'] = discretizer.fit_transform(df[['diag_1']])
+df['diag_2'] = discretizer.fit_transform(df[['diag_2']])
+df['diag_3'] = discretizer.fit_transform(df[['diag_3']])
+df['time_in_hospital'] = discretizer.fit_transform(df[['time_in_hospital']])
+df['discharge_disposition_id'] = discretizer.fit_transform(df[['discharge_disposition_id']])
+df['admission_source_id'] = discretizer.fit_transform(df[['admission_source_id']])
 
 #diag = df['diag_1'] == 1
 #filasCondicion = df[diag]

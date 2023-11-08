@@ -38,16 +38,20 @@ tk.Checkbutton(ventana, text="Perceptrón simple", variable=var3).grid(row=0, co
 # Campos de entrada
 entradas = []
 i = 3
+col = 0
 for element in colMin:
     i += 1  
     values = [str(valor) for valor in df[element].unique()]
-    ttk.Label(ventana, text=f'{element}:').grid(row=i, column=0, padx=10, pady=5, sticky='w')
+    ttk.Label(ventana, text=f'{element}:').grid(row=i, column=col, padx=10, pady=5, sticky='w')
     lista_desplegable = ttk.Combobox(ventana, values=values)
-    lista_desplegable.grid(row=i, column=1, padx=10, pady=5, sticky='e')
+    lista_desplegable.grid(row=i, column=col+1, padx=10, pady=5, sticky='e')
     entradas.append(lista_desplegable)
+    if i == 10:
+        i=3
+        col+=2
 
 #resultado esperado
-i += 1
+i = 12
 etiqueta = ttk.Label(ventana, text=f'Resultado esperado')
 etiqueta.grid(row=i, column=0, padx=10, pady=5, sticky='w')
 entrada = ttk.Entry(ventana)

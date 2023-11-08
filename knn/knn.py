@@ -3,6 +3,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import GridSearchCV
+from imblearn.over_sampling import SMOTE
 import pandas as pd
 import joblib
 import os
@@ -14,14 +15,17 @@ from const import dir,colMax,colMin
 
 
 #dir = 'C:/Angel/Programacion/project_Python/AA_Python/diabetes+130-us+hospitals+for+years+1999-2008/'
-df = pd.read_csv(dir + 'diabetic_dataPP_Knn.csv')
+df = pd.read_csv(dir + 'diabetic_dataPP.csv')
 
 
 X = df[colMin]
 y = df['readmitted']
 
+#Equilibrar datos SMOTE
+smote = SMOTE(random_state=42)
+X_resampled, y_resampled = smote.fit_resample(X, y)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.4, random_state=42)
 
 # Crear un clasificador k-NN con k= raiz cuadrada de cant de tuplas
 knn = KNeighborsClassifier(n_neighbors=265)

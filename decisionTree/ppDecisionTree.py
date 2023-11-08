@@ -65,12 +65,14 @@ df['time_in_hospital'] = pd.cut(df['time_in_hospital'], bins=cuantiles, labels=e
 
 ####admission_source_id
 def ppAdmission_source_id(e):
-    if e == 1:
-        return "Physician Referral"
-    elif e == 2:
-        return "Clinic Referral"
-    elif e == 7:
-        return "Emergency Room"
+    if e in [4,5,6,10, 18,22,25]:
+        return "Transfer"
+    elif e in [1,2,3]:
+        return "Referral"
+    elif e in [23,24]:
+        return "Born"
+    elif e == 21:
+        return "Unknown"
     else :
         return "Otherwise"
 
@@ -124,10 +126,7 @@ df['diag_3'] = df['diag_3'].apply(mapear_icd9_a_categoria)
 columnas  = ['race','gender','age','admission_type_id','discharge_disposition_id','admission_source_id',
 'time_in_hospital','num_lab_procedures','num_procedures','num_medications','number_outpatient',
 'number_emergency','number_inpatient','diag_1','diag_2','diag_3','number_diagnoses','max_glu_serum',
-'A1Cresult','metformin','repaglinide','nateglinide','chlorpropamide','glimepiride','acetohexamide',
-'glipizide','glyburide','tolbutamide','pioglitazone','rosiglitazone','acarbose','miglitol','troglitazone',
-'tolazamide','examide','citoglipton','insulin','glyburide-metformin','glipizide-metformin',
-'glimepiride-pioglitazone','metformin-rosiglitazone','metformin-pioglitazone','change', 'diabetesMed']
+'A1Cresult','metformin','glipizide','glyburide','pioglitazone','rosiglitazone','insulin','change', 'diabetesMed']
 
 encoder = LabelEncoder()
 
