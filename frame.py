@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from const import colMin,colMax,loadTrain,dir,ppDecicionTree
+from const import colMin,colMax,loadTrain,dir,ppDecicionTree,ppDataSet
 from sklearn.linear_model import Perceptron
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -35,6 +35,9 @@ tk.Checkbutton(ventana, text="Knn", variable=var1).grid(row=0, column=0, sticky=
 tk.Checkbutton(ventana, text="Árbol de decisión", variable=var2).grid(row=0, column=1, sticky="w")
 tk.Checkbutton(ventana, text="Perceptrón simple", variable=var3).grid(row=0, column=2, sticky="w")
 
+
+valor_predominante=""
+
 # Campos de entrada
 entradas = []
 i = 3
@@ -57,7 +60,9 @@ etiqueta.grid(row=i, column=0, padx=10, pady=5, sticky='w')
 entrada = ttk.Entry(ventana)
 entrada.grid(row=i, column=1, padx=10, pady=5, sticky='e')
 #entradas.append(entrada)
-
+def actualizar_valor(nuevo_valor):
+    entrada.delete(0, tk.END)  # Elimina el texto existente
+    entrada.insert(0, nuevo_valor)
 
 perceptron = joblib.load("Perceptron_classifier_model.pkl")
 knn = joblib.load("Knn_classifier_model.pkl")
@@ -83,46 +88,63 @@ diccionarioResult = {
 
 def knnResult():
     df = pd.DataFrame([seleccion_dict])
-    ppDecicionTree(df,colMin)
+    ppDataSet(df)
     scaler = MinMaxScaler()
     X_normalized = scaler.fit_transform(df.values)
     df = pd.DataFrame(X_normalized, columns=df.columns)
     print(knn.predict(df)[0])
     if knn.predict(df)[0] == 1:
-        return 1
+        return "Si"
     else :
-        return -1
+        return "No"
 
 def decisionTreeResult():
     df = pd.DataFrame([seleccion_dict])
-    ppDecicionTree(df,colMin)
+    ppDataSet(df)
     print(decicionTree.predict(df)[0])
-    if decicionTree.predict(df)[0] == 1:
+
+    if decicionTree.predict(df)[0]== 1:
         
-        return 1
+        return "Si"
     else :
-        return -1
+        return "No"
 
 
 def perceptronResult():
     df = pd.DataFrame([seleccion_dict])
-    ppDecicionTree(df,colMin)
-    print(perceptron.predict(df)[0])
-    if perceptron.predict(df) == "Si":
-       
-        return 1
+    ppDataSet(df)
+    dfP = pd.get_dummies(df, columns=df.columns )
+    ppDecicionTree(dfP,dfP.columns)
+    dfPColumn = pd.read_csv(dir + 'diabetic_dataPP_Perceptron.csv').columns
+    col = dfP.columns
+    dfPColumn = [x for x in dfPColumn if x not in col]
+
+    dfP = pd.concat([dfP, pd.DataFrame(columns=dfPColumn)], axis=1)
+    dfP = dfP.fillna(0)
+    dfP = dfP.sort_index(axis=1)
+    dfP = dfP.drop(columns=['readmitted'])
+    print(perceptron.predict(dfP)[0])
+    if perceptron.predict(dfP)[0] == 1:
+        return "Si"
     else :
-        return -1
+        return "No"
 
 
 
 def resultFinal():
+    diccionarioResult={}
     if var1.get():
-       diccionarioResult['Knn'] = knnResult()
+        diccionarioResult['Knn'] = knnResult()
     if var2.get():
-      diccionarioResult['DecicionTree']  =decisionTreeResult()
+        diccionarioResult['DecicionTree']  =decisionTreeResult()
     if var3.get():
-       diccionarioResult['Perceptron']= perceptronResult()
+        diccionarioResult['Perceptron']= perceptronResult()
+    
+    frecuencias = {valor: list(diccionarioResult.values()).count(valor) 
+    for valor in set(diccionarioResult.values())}
+    valor_predominante = max(frecuencias, key=frecuencias.get)
+    actualizar_valor(valor_predominante)
+   
 #y_pred = decicionTree.predict(X_test)
 
 

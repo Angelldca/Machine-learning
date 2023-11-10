@@ -13,7 +13,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from const import dir,colMin
+from const import dir,colMin, ppDecicionTree
 
 
 
@@ -22,6 +22,9 @@ from const import dir,colMin
 df = pd.read_csv(dir + 'diabetic_dataPP.csv')
 
 columnas  = colMin
+
+
+
 
 X = df[columnas]
 y = df['readmitted']
@@ -32,12 +35,22 @@ X_resampled, y_resampled = smote.fit_resample(X, y)
 clf = DecisionTreeClassifier()
 
 
-X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.4, random_state=16)
+X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.4, random_state=42)
 
 
 
 clf = clf.fit(X_train, y_train)
 
+feature_importances = clf.feature_importances_
+feature_importance_df = pd.DataFrame({
+    'Feature': X_train.columns,
+    'Importance': feature_importances
+})
+
+# Ordenar las características por importancia descendente
+feature_importance_df = feature_importance_df.sort_values(by='Importance', ascending=False)
+
+feature_importance_df.to_csv(dir +  'import.csv',index=False)  
 
 y_pred = clf.predict(X_test)
 
