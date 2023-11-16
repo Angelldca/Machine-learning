@@ -1,0 +1,6 @@
+### VS Code ###
+.vscode/
+
+._pycache_
+.png
+.pdf
