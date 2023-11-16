@@ -59,11 +59,7 @@ plt.show()
 x = ['service_utilization','time_in_hospital',
 'num_lab_procedures','num_procedures','num_medications','number_diagnoses']
 
-#plt.hist(df['time_in_hospital'], bins=10)
-plt.plot(df['time_in_hospital'].value_counts().sort_index(), marker='o')
-plt.xlabel('Tiempo en time_in_hospital')
-plt.ylabel('Frecuencia')
-plt.show()
+
 
 sns.countplot(x='diag_1', hue='readmitted', data=df)
 plt.show()
@@ -71,6 +67,9 @@ sns.countplot(x='diag_2', hue='readmitted', data=df)
 plt.show()
 sns.countplot(x='diag_3', hue='readmitted', data=df)
 plt.show()
+sns.countplot(x='severity_disease', hue='readmitted', data=df)
+plt.show()
+
 # import libraries needed
 import IPython
 import numpy as np
@@ -85,6 +84,7 @@ print(df_ori.info())
 print(df_ori.describe())
 # make a copy of the dataframe for preprocessing
 df = df_ori.copy(deep=True)
+
 
 
 sns.countplot(x='discharge_disposition_id', hue='readmitted', data=df)

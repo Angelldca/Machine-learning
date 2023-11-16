@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from const import colMin,colMax,loadTrain,dir,ppDecicionTree,ppDataSet
+from const import colMin,colMax,loadTrain,dir,ppDecicionTree,ppDataSet,colAttr
 from sklearn.linear_model import Perceptron
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -113,8 +113,10 @@ def decisionTreeResult():
 def perceptronResult():
     df = pd.DataFrame([seleccion_dict])
     ppDataSet(df)
-    dfP = pd.get_dummies(df, columns=df.columns )
-    ppDecicionTree(dfP,dfP.columns)
+    dfP=df
+    colNum = ['Health_index', 'severity_disease']
+    dfP = pd.get_dummies(df, columns=colAttr )
+    ppDecicionTree(dfP,dfP.drop(colNum,axis=1))
     dfPColumn = pd.read_csv(dir + 'diabetic_dataPP_Perceptron.csv').columns
     col = dfP.columns
     dfPColumn = [x for x in dfPColumn if x not in col]
